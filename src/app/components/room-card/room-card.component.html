@@ -1,1 +1,29 @@
-<p>room-card works!</p>
+<mat-card class="room-card" (click)="navigateToRoomDetail(room.id)">
+    <!-- Room image container -->
+    <div class="room-image-container">
+      <img [src]="room.img[0] || 'https://ionicframework.com/docs/img/demos/card-media.png'" [alt]="'Room ' + room.number" class="room-image">
+    </div>
+    
+    <!-- Room information content -->
+    <div class="room-content">
+      <!-- Status badges -->
+      <div class="room-badges">
+        <!--<span class="status-badge" [ngClass]="room.avalible ? 'available' : 'occupied'">
+          {{room.avalible ? 'disponible' : 'ocupada'}}
+        </span>-->
+        <span class="info-badge capacity">
+          To: {{room.capacity}} people
+        </span>
+        <span class="info-badge floor">
+          floor: {{room.floor}}
+        </span>
+      </div>
+      
+      <!-- Room title -->
+      <h2 class="room-title">Room {{room.number}} - {{room.type}}</h2>
+      
+      <!-- Description section -->
+      <h3 class="description-title">Description</h3>
+      <p class="room-description">{{room.description}}</p>
+    </div>
+  </mat-card>

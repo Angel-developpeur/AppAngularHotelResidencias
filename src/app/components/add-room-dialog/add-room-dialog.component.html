@@ -1,0 +1,51 @@
+
+    <h2 mat-dialog-title>ADD ROOM</h2>
+    <mat-dialog-content class="mat-typography">
+      <form>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Room Number</mat-label>
+          <input matInput [(ngModel)]="room.number" name="number" placeholder="Number" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Room Type</mat-label>
+          <input matInput [(ngModel)]="room.type" name="type" placeholder="Suite" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput [(ngModel)]="room.description" name="description" placeholder="The room is..." required></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Capacity</mat-label>
+          <input matInput [(ngModel)]="room.capacity" name="capacity" type="number" placeholder="1" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Floor</mat-label>
+          <input matInput [(ngModel)]="room.floor" name="floor" type="number" placeholder="2" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Image URL 1</mat-label>
+          <input matInput [(ngModel)]="room.img[0]" name="img1" type="url" placeholder="https://" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Image URL 2</mat-label>
+          <input matInput [(ngModel)]="room.img[1]" name="img2" type="url" placeholder="https://">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Price per Night</mat-label>
+          <input matInput [(ngModel)]="room.priceNight" name="priceNight" type="number" placeholder="0" required>
+          <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>CANCEL</button>
+      <button mat-button [mat-dialog-close]="room" cdkFocusInitial>CONFIRM</button>
+    </mat-dialog-actions>
+  

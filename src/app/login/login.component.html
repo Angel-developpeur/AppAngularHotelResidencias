@@ -14,7 +14,7 @@
           <div class="form-field">
             <mat-label>Email</mat-label>
             <mat-form-field appearance="outline" class="full-width">
-              <input matInput placeholder="correo@ejemplo.com" formControlName="email">
+              <input matInput placeholder="correo@ejemplo.com" formControlName="email" value="angeldev.sawa@gmail.com">
               <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
                 Email es requerido
               </mat-error>
@@ -27,7 +27,7 @@
           <div class="form-field">
             <mat-label>Contraseña</mat-label>
             <mat-form-field appearance="outline" class="full-width">
-              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" value="123456">
               <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>

@@ -1,0 +1,58 @@
+<mat-toolbar style="background-color: #444; color:white">
+    <mat-icon mat-icon-button (click)="navigateBack()" aria-label="Back" style="color: white;">arrow_back</mat-icon>
+    <span class="spacer">Extras</span>
+  </mat-toolbar>
+  
+  <div class="container">
+    <div class="extras-list">
+      <ul *ngIf="extrasArray.length > 0; else noExtras">
+        <li *ngFor="let extra of extrasArray" class="extra-item">
+          <span>{{extra.nombre}}</span>
+          <div class="extra-actions">
+            <button mat-icon-button (click)="editExtra(extra)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteExtra(extra)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noExtras>
+        <p>No hay extras disponibles</p>
+      </ng-template>
+    </div>
+    <button mat-fab color="accent" class="fab-button" (click)="openAddExtraDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  
+  <style>
+  .container {
+    padding: 20px;
+    position: relative;
+  }
+  
+  .extras-list {
+    margin-bottom: 80px;
+  }
+  
+  .extra-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .extra-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .fab-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  </style>

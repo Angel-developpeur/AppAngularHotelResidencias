@@ -49,7 +49,7 @@ export class LoginComponent {
         );
         
         if (userCredential.user) { // Si el login es exitoso
-          alert('Login successful');
+         // alert('Login successful');
           await this.router.navigate(['/home']);  // Redirigir a la página de inicio
         }
       } catch (error: any) { // Si ocurre un error durante el login

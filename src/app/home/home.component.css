@@ -1,19 +1,56 @@
 
-.home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    background-color: #fefefe;
-    background-image: linear-gradient(to bottom, #e1e1e1, #d2d2d2);
-  }
+    .toolbar-spacer {
+      flex: 1 1 auto;
+    }
+
+    .content-container {
+      padding: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      min-height: calc(100vh - 64px);
+    }
+
+    .search-field {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .error-message {
+      color: #f44336;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .rooms-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .room-card-item {
+      margin-bottom: 16px;
+    }
+
+    .fab-button {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+    }
+
+    @media (max-width: 599px) {
+      .rooms-container {
+        grid-template-columns: 1fr;
+      }
+    }
   
-  .hotel-header {
-    width: 100%;
-    padding: 0px;
-    background-color: #1a1a1a;
-    color: white;
-    padding-left: 40px;
-    text-align: left;
-  }

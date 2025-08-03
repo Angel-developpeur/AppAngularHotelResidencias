@@ -1,0 +1,12 @@
+.back-button {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+    
+    i {
+      margin-right: 8px;
+    }
+  }

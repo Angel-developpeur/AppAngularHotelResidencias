@@ -1,0 +1,101 @@
+<mat-toolbar style="background-color: #444; color:white">
+    <mat-icon mat-icon-button (click)="navigateBack()" aria-label="Back" style="color: white;">arrow_back</mat-icon>
+    <span class="spacer">Reservations</span>
+  </mat-toolbar>
+  
+  <div class="container">
+    <div class="extras-list">
+      <ul *ngIf="reservationsArray.length > 0">
+        <li *ngFor="let reservation of reservationsArray" class="extra-item">
+            <span [ngStyle]="{ 'white-space': 'pre-line' }">{{ reservation.client_name + '\n' + (reservation.date_input?.toDate() | date:'short') + ' - ' + (reservation.date_leave?.toDate() | date:'short') }}</span>
+          <div class="extra-actions">
+           <button mat-icon-button (click)="showModal(reservation.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteReservation(reservation)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </li>
+      </ul>
+      <div *ngIf="reservationsArray.length === 0">
+        <p>No hay extras disponibles</p>
+      </div>
+    </div>
+
+    <!--modal-->
+    <ng-template #reserveModalTemplate>
+      <div class="modal-content">
+        <h2 mat-dialog-title>Edit Reservation</h2>
+        <mat-dialog-content>
+          <div class="form-container" style="margin: 10px; padding-top: 30px;">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Client Name</mat-label>
+              <input matInput #nameClient>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Client Phone</mat-label>
+              <input matInput #phoneClient>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Date Range</mat-label>
+              <mat-date-range-input [rangePicker]="picker" [min]="minDate">
+                <input matStartDate placeholder="Check-in date" [(ngModel)]="startDate">
+                <input matEndDate placeholder="Check-out date" [(ngModel)]="endDate">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+
+            
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Number of Guests</mat-label>
+              <mat-select [(ngModel)]="selectedPeople">
+                <mat-option *ngFor="let i of capacityOptions" [value]="i">{{ i }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>Cancel</button>
+          <button mat-raised-button color="primary" (click)="editReservation()">
+            Confirm
+          </button>
+        </mat-dialog-actions>
+      </div>
+    </ng-template>
+   
+  </div>
+  
+  <style>
+  .container {
+    padding: 20px;
+    position: relative;
+  }
+  
+  .extras-list {
+    margin-bottom: 80px;
+  }
+  
+  .extra-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .extra-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .fab-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  </style>

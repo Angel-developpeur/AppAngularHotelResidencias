@@ -1,0 +1,280 @@
+
+    <!-- Toolbar -->
+    <mat-toolbar style="background-color: #444; color:white">
+      <button mat-icon-button (click)="navigateBack()" aria-label="Back" style="color: white;">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span class="spacer">Room Details</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Options" style="color: white;">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openEditModal()" [disabled]="reservationActive">
+          <mat-icon color="primary">edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="confirmDelete()" [disabled]="reservationActive">
+          <mat-icon color="warn">delete</mat-icon>
+          <span>Delete</span>
+        </button>
+
+        <button mat-menu-item (click)="navigateToCalendar()">
+          <mat-icon color="primary">calendar_today</mat-icon>
+          <span>Caledar</span>
+        </button>
+
+        <button mat-menu-item (click)="gotoReservations()">
+          <mat-icon color="primary">event-available</mat-icon>
+          <span>Reservations</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+  
+    <div class="content-container">
+      <!-- Loading spinner -->
+      <div class="loading-container" *ngIf="!roomDetails?.number">
+        <mat-spinner></mat-spinner>
+      </div>
+      
+      <!-- Room content -->
+      <div class="main-content" *ngIf="roomDetails?.number">
+        <!-- Image gallery -->
+        <div class="gallery-container">
+          <img [src]="roomDetails.img[0] || 'https://ionicframework.com/docs/img/demos/card-media.png'" alt="Room image" class="room-image">
+          
+          <!-- Room status badge overlaid on image  roomDetails.avalible ? 'available' : 'occupied'-->
+          <!--<div class="status-badge" [ngClass]="!rervationIsToday ? 'available' : 'occupied'">
+            {{ !rervationIsToday ? 'Available' : 'Occupied'}}
+          </div>-->
+        </div>
+        
+        <!-- Room details section -->
+        <div class="details-section">
+          <div class="room-header">
+            <h1 class="room-title">Room {{roomDetails.number}}</h1>
+            <div class="price-container">
+              
+              <div class="room-price">${{roomDetails.priceNight}}</div>
+              <span class="price-period">per night</span>
+            </div>
+          </div>
+          
+          <!-- Room features -->
+          <div class="features-container">
+            <mat-chip-listbox aria-label="Room features">
+              <mat-chip *ngFor="let character of roomDetails?.characteristics" 
+                        class="feature-chip">
+                <mat-icon *ngIf="getFeatureIcon(character)">{{getFeatureIcon(character)}}</mat-icon>
+                {{character}}
+              </mat-chip>
+            </mat-chip-listbox>
+          </div>
+          
+          <!-- Description -->
+          <div class="description-container">
+            <h2 class="section-title">Description</h2>
+            <p class="room-description">{{roomDetails.description}}</p>
+          </div>
+
+           <!-- Action buttons -->
+            <div class="actions-container">
+                <!-- Available: Reserve button -->
+                 <!-- ngIf=!reservationActive" -->
+                <button 
+                        (click)="openReserveModal()" 
+                        mat-raised-button color="primary" 
+                        class="main-action-button">
+                <mat-icon>calendar_today</mat-icon>
+                Reserve Now
+                </button>
+                
+                <!-- Has reservation: Edit/Cancel buttons --
+                <div *ngIf="reservationActive && !rervationIsToday" class="dual-button-container">
+                  <button (click)="openReserveModal()" 
+                          mat-stroked-button color="primary" 
+                          class="secondary-action-button">
+                      <mat-icon>edit</mat-icon>
+                      Edit Reservation
+                  </button>
+                  <button (click)="confirmDeleteReserve()" 
+                          mat-raised-button color="warn" 
+                          class="secondary-action-button">
+                      <mat-icon>cancel</mat-icon>
+                      Cancel
+                  </button>
+                </div> -->
+                
+                <!-- Check-in button -->
+                <button *ngIf="rervationIsToday && !therIsChecIn" 
+                        (click)="DoCheckIn()" 
+                        mat-raised-button color="accent" 
+                        class="main-action-button">
+                <mat-icon>login</mat-icon>
+                Check In
+                </button>
+                
+                <!-- Check-out button -->
+                <button *ngIf="therIsChecIn" 
+                        (click)="DoCheckOut()" 
+                        mat-raised-button color="accent" 
+                        class="main-action-button">
+                <mat-icon>logout</mat-icon>
+                Check Out
+                </button>
+            </div>
+          
+          <!-- Amenities section (optional extension) -->
+          <div class="amenities-container">
+            
+            <div class="amenity-badge" *ngFor="let amenity of roomDetails.amenities">
+              
+                <i class="material-icons">{{getAmenityIcon(amenity)}}</i>
+                {{amenity}}
+             
+            </div>
+          </div>
+
+         
+            
+         
+
+        </div>
+      </div>
+    </div>
+    
+   
+  
+    <!-- Edit Modal -->
+    <ng-template #editModalTemplate>
+      <div class="modal-content">
+        <h2 mat-dialog-title>Edit Room</h2>
+        <mat-dialog-content>
+          <div class="form-container" style="margin: 10px; padding-top: 30px;">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Room Number</mat-label>
+              <input matInput #numberRoom [value]="roomDetails.number">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Room Type</mat-label>
+              <input matInput #typeRoom [value]="roomDetails.type">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput #descriptionRoom [value]="roomDetails.description" rows="3"></textarea>
+            </mat-form-field>
+  
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Capacity</mat-label>
+                <input matInput type="number" #capacityRoom [value]="roomDetails.capacity">
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline">
+                <mat-label>Floor</mat-label>
+                <input matInput type="number" #floorRoom [value]="roomDetails.floor">
+              </mat-form-field>
+            </div>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Image URL 1</mat-label>
+              <input matInput #image1Room [value]="roomDetails.img[0]">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Image URL 2</mat-label>
+              <input matInput #image2Room [value]="roomDetails.img[1] || ''">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Price per Night</mat-label>
+              <input matInput type="number" #priceRoom [value]="roomDetails.priceNight">
+              <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>Cancel</button>
+          <button mat-raised-button color="primary" (click)="updateCurrentRoom()">Save</button>
+        </mat-dialog-actions>
+      </div>
+    </ng-template>
+  
+    <!-- Reserve Modal -->
+    <ng-template #reserveModalTemplate>
+      <div class="modal-content">
+        <h2 mat-dialog-title>New Reservation</h2>
+        <mat-dialog-content>
+          <div class="form-container" style="margin: 10px; padding-top: 30px;">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Client Name</mat-label>
+              <input matInput #nameClient>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Client Phone</mat-label>
+              <input matInput #phoneClient>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Date Range</mat-label>
+              <mat-date-range-input [rangePicker]="picker" [min]="minDate">
+                <input matStartDate placeholder="Check-in date" [(ngModel)]="startDate">
+                <input matEndDate placeholder="Check-out date" [(ngModel)]="endDate">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+
+            
+
+            
+              
+              
+            
+            
+            
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Number of Guests</mat-label>
+              <mat-select [(ngModel)]="selectedPeople">
+                <mat-option *ngFor="let i of capacityOptions" [value]="i">{{ i }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>Cancel</button>
+          <button mat-raised-button color="primary" (click)="addReservation()">
+            Confirm
+          </button>
+        </mat-dialog-actions>
+      </div>
+    </ng-template>
+  
+    <!-- Confirmation dialog for delete -->
+    <ng-template #confirmDialog>
+      <h2 mat-dialog-title>Confirm Delete</h2>
+      <mat-dialog-content>
+        Are you sure you want to delete this room?
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">Delete</button>
+      </mat-dialog-actions>
+    </ng-template>
+  
+    <!-- Confirmation dialog for delete reservation -->
+    <ng-template #confirmReservationDialog>
+      <h2 mat-dialog-title>Confirm Cancellation</h2>
+      <mat-dialog-content>
+        Are you sure you want to cancel this reservation?
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>No</button>
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">Yes, Cancel Reservation</button>
+      </mat-dialog-actions>
+    </ng-template>
+

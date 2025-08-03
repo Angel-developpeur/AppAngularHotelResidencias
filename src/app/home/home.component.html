@@ -1,10 +1,51 @@
-<div class="home-container">
 
-    <div class="hotel-header">
-        <h1>Hotel Rooms</h1>
+    <!-- Header -->
+    <mat-toolbar style="background-color: #444; color:white">
+      <span>Hotel Rooms</span>
+      <span class="toolbar-spacer"></span>
+     
+    </mat-toolbar>
+
+    <!-- Main content -->
+    <div class="content-container">
+      <!-- Search bar -->
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search rooms...</mat-label>
+        <input matInput (input)="handleSearch($event)" [value]="searchTerm">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Loading indicator -->
+      <div *ngIf="loading" class="center-content">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading rooms...</p>
+      </div>
+
+      <!-- Error message -->
+      <div *ngIf="error" class="error-message">
+        <p>{{ errorMessage }}</p>
+        <button mat-raised-button color="primary" (click)="loadRooms()">Retry</button>
+      </div>
+
+      <!-- Room list -->
+      <div *ngIf="!loading && !error" class="rooms-container">
+        <!-- No rooms message -->
+        <div *ngIf="filteredRooms.length === 0" class="center-content">
+          <p>No rooms found matching your criteria.</p>
+          <button mat-raised-button color="primary" (click)="resetFilters()">Clear Filters</button>
+        </div>
+
+        <!-- Room cards -->
+        <app-room-card
+          *ngFor="let room of filteredRooms"
+          [room]="room"
+          class="room-card-item"
+        ></app-room-card>
+      </div>
+
+      <!-- Floating action button -->
+      <button mat-fab color="accent" class="fab-button" (click)="openAddRoomDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
-
-    <div class="rooms-content">
-
-    </div>
-</div>
+  
